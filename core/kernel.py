@@ -2,21 +2,14 @@ import os
 
 from typing import Callable
 from functools import partial
-from dataclasses import dataclass
 
 from common.constants import Status, Privilege
+from common.response import Response
 
 
 _log_type = Callable[[str], None] | None
 _KERNEL_FILEPATH = os.path.join("disk", "kernel")
 _BOOT_FILES = ["filetable", "sysinfo", "secretinfo", "usertable"]
-
-
-@dataclass
-class Response:
-    status: Status
-    message: str
-    data: Callable | None = None
 
 
 def boot(log: _log_type = None) -> Response:
@@ -56,3 +49,8 @@ def factory_reset(log: _log_type = None, privilege: Privilege = Privilege.NONADM
         if log: log(f"Created {file}")
     
     return Response(Status.SUCCESS, "Factory reset was successful")
+
+
+def create_user(log: _log_type = None, privilege: Privilege = Privilege.NONADMIN) -> Response:
+    username = ""
+    return Response(Status.SUCCESS, f"{username} created successfully.")
